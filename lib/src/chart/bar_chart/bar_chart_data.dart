@@ -322,6 +322,8 @@ class BarChartRodData with EquatableMixin {
     BorderSide? borderSide,
     BackgroundBarChartRodData? backDrawRodData,
     List<BarChartRodStackItem>? rodStackItems,
+    this.valueOnBar,
+    TextStyle? onBarValueStyle,
   })  : fromY = fromY ?? 0,
         color =
             color ?? ((color == null && gradient == null) ? Colors.cyan : null),
@@ -329,7 +331,8 @@ class BarChartRodData with EquatableMixin {
         borderRadius = Utils().normalizeBorderRadius(borderRadius, width ?? 8),
         borderSide = Utils().normalizeBorderSide(borderSide, width ?? 8),
         backDrawRodData = backDrawRodData ?? BackgroundBarChartRodData(),
-        rodStackItems = rodStackItems ?? const [];
+        rodStackItems = rodStackItems ?? const [],
+        onBarValueStyle = onBarValueStyle ?? const TextStyle(color: Colors.white, fontSize: 8, fontWeight: FontWeight.w700);
 
   /// [BarChart] renders rods vertically from [fromY].
   final double fromY;
@@ -365,6 +368,10 @@ class BarChartRodData with EquatableMixin {
   /// you can fill up the [rodStackItems] to have a Stacked Chart.
   final List<BarChartRodStackItem> rodStackItems;
 
+  final String? valueOnBar;
+
+  final TextStyle? onBarValueStyle;
+
   /// Determines the upward or downward direction
   bool isUpward() => toY >= fromY;
 
@@ -380,6 +387,8 @@ class BarChartRodData with EquatableMixin {
     BorderSide? borderSide,
     BackgroundBarChartRodData? backDrawRodData,
     List<BarChartRodStackItem>? rodStackItems,
+    String? valueOnBar,
+    TextStyle? onBarValueStyle,
   }) {
     return BarChartRodData(
       fromY: fromY ?? this.fromY,
@@ -391,6 +400,8 @@ class BarChartRodData with EquatableMixin {
       borderSide: borderSide ?? this.borderSide,
       backDrawRodData: backDrawRodData ?? this.backDrawRodData,
       rodStackItems: rodStackItems ?? this.rodStackItems,
+      valueOnBar: valueOnBar ?? this.valueOnBar,
+      onBarValueStyle: onBarValueStyle ?? this.onBarValueStyle,
     );
   }
 
@@ -412,6 +423,8 @@ class BarChartRodData with EquatableMixin {
       ),
       rodStackItems:
           lerpBarChartRodStackList(a.rodStackItems, b.rodStackItems, t),
+      valueOnBar: a.valueOnBar,
+      onBarValueStyle: TextStyle.lerp(a.onBarValueStyle, b.onBarValueStyle, t),
     );
   }
 
@@ -427,6 +440,8 @@ class BarChartRodData with EquatableMixin {
         rodStackItems,
         color,
         gradient,
+        valueOnBar,
+        onBarValueStyle,
       ];
 }
 

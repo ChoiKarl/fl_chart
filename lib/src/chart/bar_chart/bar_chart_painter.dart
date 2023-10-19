@@ -33,11 +33,18 @@ class BarChartPainter extends AxisChartPainter<BarChartData> {
       ..style = PaintingStyle.stroke
       ..color = Colors.transparent
       ..strokeWidth = 1.0;
+
+    _valueOnBarTextPainter = TextPainter(
+      textAlign: TextAlign.center,
+      textDirection: TextDirection.ltr,
+    );
+
   }
   late Paint _barPaint;
   late Paint _barStrokePaint;
   late Paint _bgTouchTooltipPaint;
   late Paint _borderTouchTooltipPaint;
+  late TextPainter _valueOnBarTextPainter;
 
   List<GroupBarsPosition>? _groupBarsPosition;
 
@@ -276,6 +283,18 @@ class BarChartPainter extends AxisChartPainter<BarChartData> {
             barRRect.getRect(),
           );
           canvasWrapper.drawRRect(barRRect, _barPaint);
+
+          if (barRod.valueOnBar != null) {
+            _valueOnBarTextPainter
+              ..text = TextSpan(
+                  text: barRod.valueOnBar,
+                  style: barRod.onBarValueStyle)
+              ..layout();
+            var centerOffset = barRRect.getRect().center;
+            centerOffset = centerOffset - Offset(_valueOnBarTextPainter.width / 2, _valueOnBarTextPainter.height / 2);
+            _valueOnBarTextPainter.paint(canvasWrapper.canvas, centerOffset);
+          }
+
 
           // draw border stroke
           if (borderSide.width > 0 && borderSide.color.opacity > 0) {
